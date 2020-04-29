@@ -3,7 +3,7 @@ NASA Cloudstreet Photos Classification
 
 Using Convolutional Neural Network to classfiy the Cloudstreet photos provided by [NASA Impact Team](https://github.com/NASA-IMPACT/data_share).
 
-# 1. Cloud #
+# 1. Cloud Street image #
 
 
 ### 1-1) About
