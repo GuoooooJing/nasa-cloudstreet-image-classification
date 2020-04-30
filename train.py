@@ -45,6 +45,27 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=batch_size, 
                                           shuffle=False)
 
+# Test the model
+def validate(model, test_loader):
+    model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
+    with torch.no_grad():
+        correct = 0
+        total = 0
+        for images, labels in test_loader:
+            images = images.to(device)
+            labels = labels.to(device)
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            #print(predicted)
+            print("=============")
+            #print(labels)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+        print('Test Accuracy of the model on the {} test images: {} %'.format(test_no_num+test_yes_num,100 * correct / total))
+        return 100*(correct/total)
+
+
 print("finish loading==========================================")
 if 'loss.csv' in os.listdir('./'):
     os.remove('loss.csv')
@@ -85,22 +106,3 @@ for epoch in range(num_epochs):
     
     #torch.save(model.state_dict(), 'model.ckpt')
 
-# Test the model
-def validate(model, test_loader):
-    model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
-    with torch.no_grad():
-        correct = 0
-        total = 0
-        for images, labels in test_loader:
-            images = images.to(device)
-            labels = labels.to(device)
-            outputs, _ = model(images)
-            _, predicted = torch.max(outputs.data, 1)
-            #print(predicted)
-            print("=============")
-            #print(labels)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-
-        print('Test Accuracy of the model on the {} test images: {} %'.format(test_no_num+test_yes_num,100 * correct / total))
-        return 100*(correct/total)
