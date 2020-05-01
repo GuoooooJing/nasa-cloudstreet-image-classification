@@ -1,4 +1,6 @@
 *.pth
+.DS_Store
+.pth
 cloudstreet
 dataset
 false
